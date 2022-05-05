@@ -45,18 +45,11 @@ export default function Main({onEditProfile, onAddPlace, onEditAvatar, onCardCli
       <section className="elements">
       {
         cardsData.map((card) => (
-          //<Card {...card} key={card.id}/>
           <Card name={card.name} link={card.link} likes={card.likes} key={card.id} onCardClick={onCardClick}/>
         ))
       }      
-
       </section>
-
     </main>
-
-    
-
-    
 
   <div className="popup popup_type_confirm">
     <div className="popup__container">
@@ -68,8 +61,6 @@ export default function Main({onEditProfile, onAddPlace, onEditAvatar, onCardCli
       </form>
     </div>
   </div>
-
-
   </>
   )
 }
