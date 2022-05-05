@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function PopupWithForm({ isOpen, name, children, onClose }) {  //здесь не передаем title, он часть формы, поэтому внутри children. такова разметка
+export default function PopupWithForm({ isOpen, name, children, onClose }) {  
     const className = `popup popup_type_${name} ${isOpen ? 'popup_opened' : ''}`;
   return (
     <div className={className}>

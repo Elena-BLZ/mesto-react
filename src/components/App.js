@@ -2,7 +2,8 @@ import Header from './Header';
 import Footer from './Footer';
 import Main from './Main';
 import PopupWithForm from './PopupWithForm';
-import React from 'react'
+import React from 'react';
+import ImagePopup from './ImagePopup';
 
 
 
@@ -12,6 +13,11 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setisAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setisEditAvatarPopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState(null); //{name, link}
+
+  function handleCardClick (card) {
+    setSelectedCard (card);
+  }
 
   function handleEditAvatarClick () {
     setisEditAvatarPopupOpen (true);
@@ -28,11 +34,12 @@ function App() {
     setisEditAvatarPopupOpen (false);
     setIsEditProfilePopupOpen (false);
     setisAddPlacePopupOpen (false);
+    setSelectedCard (null);
   }
 
   const forms = {
     EditAvatarForm:  (
-      <form className="edit-frm edit-frm_type_avatar" name="avatar-frm" novalidate>
+      <form className="edit-frm edit-frm_type_avatar" name="avatar-frm" noValidate>
         <h2 className="edit-frm__heading">Обновить аватар</h2>
         <input type="url" className="edit-frm__item edit-frm__item_type_link" name="avatar"
           placeholder="Ссылка на аватар" required></input>
@@ -41,22 +48,22 @@ function App() {
       </form>
     ),
     EditProfileForm:   (
-      <form className="edit-frm edit-frm_type_profile" name="edit-profile-frm" novalidate>
+      <form className="edit-frm edit-frm_type_profile" name="edit-profile-frm" noValidate>
       <h2 className="edit-frm__heading">Редактировать профиль</h2>
       <input type="text" className="edit-frm__item edit-frm__item_type_name" name="name" placeholder="Как вас зовут?"
-        required minlength="2" maxlength="40"></input>
+        required minLength="2" maxLength="40"></input>
       <span id="name-error" className="edit-frm__error-message"></span>
       <input type="text" className="edit-frm__item edit-frm__item_type_description" name="description"
-        placeholder="Еще немного о себе." required minlength="2" maxlength="200"></input>
+        placeholder="Еще немного о себе." required minLength="2" maxLength="200"></input>
       <span id="description-error" className="edit-frm__error-message"></span>
       <button className="edit-frm__save-btn button" type='submit'>Сохранить</button>
     </form>
     ),
     AddPlaceForm: (
-      <form className="edit-frm edit-frm_type_element" name="add-element-frm" novalidate>
+      <form className="edit-frm edit-frm_type_element" name="add-element-frm" noValidate>
       <h2 className="edit-frm__heading">Новое место</h2>
       <input type="text" className="edit-frm__item edit-frm__item_type_place" name="place"
-        placeholder="Название" required minlength="2" maxlength="30"></input>
+        placeholder="Название" required minLength="2" maxLength="30"></input>
       <span id="place-error" className="edit-frm__error-message"></span>
       <input type="url" className="edit-frm__item edit-frm__item_type_link" name="link"
         placeholder="Ссылка на картинку" required></input>
@@ -68,31 +75,20 @@ function App() {
 
 
   return (
-  <div class="page">
+  <div className="page">
    <div className="page__container">
      <Header />
-     <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick}/>
+     <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} onCardClick={handleCardClick}/>
      <Footer />
      <PopupWithForm isOpen={isEditProfilePopupOpen} name='profile' children = {forms.EditProfileForm} onClose = {closeAllPopups}/>
      <PopupWithForm isOpen={isAddPlacePopupOpen} name='element' children = {forms.AddPlaceForm} onClose = {closeAllPopups}/>
      <PopupWithForm isOpen={isEditAvatarPopupOpen} name='avatar' children = {forms.EditAvatarForm} onClose = {closeAllPopups}/>
+     <ImagePopup card ={selectedCard} onClose={closeAllPopups}/>
   </div>
 
   
 
-  <template className="element-template">
-    <article className="element">
-      <div className="element__photo-container">
-        <img className="element__photo button"></img>
-        <button className="element__del-btn button" type="button" aria-label="Удалить"></button>
-      </div>
-      <div className="element__info">
-        <h2 className="element__name"></h2>
-        <button className="element__like-btn button" type="button" aria-label="По нраву мне"></button>
-        <span className="element__like-count">1</span>
-      </div>
-    </article>
-  </template>
+  
    
    
    </div>
