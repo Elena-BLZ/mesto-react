@@ -16,6 +16,7 @@ export default function Card({name, link, likes, id, onCardClick}) {
           onClick={handleClick}
           className="element__photo button"
           src={link}
+          alt={name}
         ></img>
         <button
           className="element__del-btn button"

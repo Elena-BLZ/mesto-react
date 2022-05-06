@@ -1,16 +1,15 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { api } from '../utils/Api';
 import Card from './Card';
 
-
 export default function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
 
-  const [userName, setUserName] = React.useState('');
-  const [userDescription, setUserDescription] = React.useState('');
-  const [userAvatar, setUserAvatar] = React.useState('');
-  const [cardsData, setCardsData] = React.useState([]);
+  const [userName, setUserName] = useState('');
+  const [userDescription, setUserDescription] = useState('');
+  const [userAvatar, setUserAvatar] = useState('');
+  const [cardsData, setCardsData] = useState([]);
  
-  React.useEffect(() => {
+  useEffect(() => {
 
     api.getProfile()
     .then (res => {
@@ -28,7 +27,7 @@ export default function Main({onEditProfile, onAddPlace, onEditAvatar, onCardCli
   }, []); 
 
   return (
-    <>
+    
     <main className="page__content">
       <section className="profile page__profile">
         <img src={userAvatar} alt="Аватар" className="profile__avatar"></img>
@@ -50,17 +49,6 @@ export default function Main({onEditProfile, onAddPlace, onEditAvatar, onCardCli
       }      
       </section>
     </main>
-
-  <div className="popup popup_type_confirm">
-    <div className="popup__container">
-      <button className="popup__close-btn button" type="button" aria-label="Закрыть">
-      </button>
-      <form className="edit-frm edit-frm_type_confirm" name="confirm-frm" noValidate>
-        <h2 className="edit-frm__heading">Вы уверены?</h2>
-        <button className="edit-frm__save-btn button" type='submit'>Да</button>
-      </form>
-    </div>
-  </div>
-  </>
+  
   )
 }
