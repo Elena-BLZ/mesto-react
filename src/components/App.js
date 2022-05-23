@@ -3,6 +3,7 @@ import Footer from "./Footer";
 import Main from "./Main";
 import PopupWithForm from "./PopupWithForm";
 import EditProfilePopup from "./EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup";
 import React,  {useState, useEffect, useContext} from "react";
 import ImagePopup from "./ImagePopup";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
@@ -54,6 +55,13 @@ function App() {
     })
   }
 
+  function handleUpdateAvatar(avatar) {
+    api.editAvatar (avatar.link).then(()=>{
+      setCurrentUser((state)=>{return {...state, avatar: avatar.link}});
+      closeAllPopups();
+    })
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
     <div className="page">
@@ -97,23 +105,7 @@ function App() {
           <span id="link-error" className="edit-frm__error-message"></span>
         </PopupWithForm>
 
-        <PopupWithForm
-          isOpen={isEditAvatarPopupOpen}
-          name="avatar"
-          formName="avatar-frm"
-          title="Обновить аватар"
-          buttonText="Сохранить"
-          onClose={closeAllPopups}
-        >
-          <input
-            type="url"
-            className="edit-frm__item edit-frm__item_type_link"
-            name="avatar"
-            placeholder="Ссылка на аватар"
-            required
-          ></input>
-          <span id="avatar-error" className="edit-frm__error-message"></span>
-        </PopupWithForm>
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose ={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
 
