@@ -8,6 +8,7 @@ export default function PopupWithForm({
   buttonText,
   onClose,
   children,
+  onSubmit
 }) {
   const className = `popup popup_type_${name} ${isOpen ? "popup_opened" : ""}`;
   return (
@@ -23,6 +24,7 @@ export default function PopupWithForm({
           className={`edit-frm edit-frm_type_${name}`}
           name={formName}
           noValidate
+          onSubmit={onSubmit}
         >
           <h2 className="edit-frm__heading">{title}</h2>
           {children}

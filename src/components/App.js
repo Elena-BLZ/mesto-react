@@ -2,6 +2,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Main from "./Main";
 import PopupWithForm from "./PopupWithForm";
+import EditProfilePopup from "./EditProfilePopup";
 import React,  {useState, useEffect, useContext} from "react";
 import ImagePopup from "./ImagePopup";
 import {CurrentUserContext} from "../contexts/CurrentUserContext";
@@ -46,6 +47,13 @@ function App() {
     setSelectedCard(null);
   }
 
+  function handleUpdateUser({name, description}) {
+    api.editProfile (name, description).then(()=>{
+      setCurrentUser ((state)=>{return {...state, name: name, about: description}});
+      closeAllPopups();
+    })
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
     <div className="page">
@@ -58,38 +66,8 @@ function App() {
           onCardClick={handleCardClick}
         />
         <Footer />
-        <PopupWithForm
-          isOpen={isEditProfilePopupOpen}
-          name="profile"
-          formName="edit-profile-frm"
-          title="Редактировать профиль"
-          buttonText="Сохранить"
-          onClose={closeAllPopups}
-        >
-          <input
-            type="text"
-            className="edit-frm__item edit-frm__item_type_name"
-            name="name"
-            placeholder="Как вас зовут?"
-            required
-            minLength="2"
-            maxLength="40"
-          ></input>
-          <span id="name-error" className="edit-frm__error-message"></span>
-          <input
-            type="text"
-            className="edit-frm__item edit-frm__item_type_description"
-            name="description"
-            placeholder="Еще немного о себе."
-            required
-            minLength="2"
-            maxLength="200"
-          ></input>
-          <span
-            id="description-error"
-            className="edit-frm__error-message"
-          ></span>
-        </PopupWithForm>
+        <EditProfilePopup isOpen = {isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}/>
+        
 
         <PopupWithForm
           isOpen={isAddPlacePopupOpen}
