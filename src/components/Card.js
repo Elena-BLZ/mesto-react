@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 //<Card name={card.name} link={card.link} likes={card.likes} key={card.id} onCardClick={onCardClick}/>
-export default function Card({id, onCardClick, onCardLike, cardData}) {
+export default function Card({onCardClick, onCardLike, onCardDelete, cardData}) {
 
   const currentUser = useContext(CurrentUserContext);
 
@@ -25,16 +25,17 @@ export default function Card({id, onCardClick, onCardLike, cardData}) {
   // // Создаём переменную, которую после зададим в `className` для кнопки лайка
   const cardLikeButtonClassName = (`element__like-btn button ${isLiked && 'element__like-btn_active'}`);
 
-
-
   function handleClick() {
     onCardClick(card);
   }  
+
 //function handleCardLike(id, isLiked) 
   function handleLike() {
- 
-
     onCardLike(cardData._id, isLiked);
+  }
+
+  function handleDelete () {
+    onCardDelete(cardData._id)
   }
   return ( 
     <article className="element">
@@ -49,6 +50,7 @@ export default function Card({id, onCardClick, onCardLike, cardData}) {
           className={cardDeleteButtonClassName}
           type="button"
           aria-label="Удалить"
+          onClick={handleDelete}
         ></button>
       </div>
       <div className="element__info">

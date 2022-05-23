@@ -27,6 +27,14 @@ export default function Main({
     });
   }
 
+  function handleCardDelete (id) {
+    api.deleteCard (id).then (()=>{
+      setCardsData((state)=>state.filter(c=>
+         c._id!==id));
+    })
+
+  }
+
   return (
     <main className="page__content">
       <section className="profile page__profile">
@@ -67,13 +75,11 @@ export default function Main({
            const cardId = card._id;
           return (
           <Card
-          key={cardId}
-            
+            key={cardId}
             ownerId={card.owner._id}
-            
             onCardClick={onCardClick}
             onCardLike={handleCardLike}
-
+            onCardDelete={handleCardDelete}
             cardData = {card}
           />
         )})}
