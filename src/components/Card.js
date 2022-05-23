@@ -1,43 +1,49 @@
 import React, { useContext } from "react";
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 //<Card name={card.name} link={card.link} likes={card.likes} key={card.id} onCardClick={onCardClick}/>
-export default function Card({onCardClick, onCardLike, onCardDelete, cardData}) {
-
+export default function Card({
+  onCardClick,
+  onCardLike,
+  onCardDelete,
+  cardData,
+}) {
   const currentUser = useContext(CurrentUserContext);
 
   const card = {
     name: cardData.name,
     link: cardData.link,
-  }
+  };
 
   // Определяем, являемся ли мы владельцем текущей карточки
   const isOwn = cardData.owner._id === currentUser._id;
 
   // Создаём переменную, которую после зададим в `className` для кнопки удаления
-  const cardDeleteButtonClassName = (
-    `element__del-btn button ${!isOwn && 'element__del-btn_hidden'}`
-  ); 
+  const cardDeleteButtonClassName = `element__del-btn button ${
+    !isOwn && "element__del-btn_hidden"
+  }`;
 
-    // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
-  const isLiked = cardData.likes.some(i => i._id === currentUser._id);
+  // Определяем, есть ли у карточки лайк, поставленный текущим пользователем
+  const isLiked = cardData.likes.some((i) => i._id === currentUser._id);
 
   // // Создаём переменную, которую после зададим в `className` для кнопки лайка
-  const cardLikeButtonClassName = (`element__like-btn button ${isLiked && 'element__like-btn_active'}`);
+  const cardLikeButtonClassName = `element__like-btn button ${
+    isLiked && "element__like-btn_active"
+  }`;
 
   function handleClick() {
     onCardClick(card);
-  }  
+  }
 
-//function handleCardLike(id, isLiked) 
+  //function handleCardLike(id, isLiked)
   function handleLike() {
     onCardLike(cardData._id, isLiked);
   }
 
-  function handleDelete () {
-    onCardDelete(cardData._id)
+  function handleDelete() {
+    onCardDelete(cardData._id);
   }
-  return ( 
+  return (
     <article className="element">
       <div className="element__photo-container">
         <img

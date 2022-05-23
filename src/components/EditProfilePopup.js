@@ -1,39 +1,37 @@
-import React, {useState, useContext} from "react";
+import React, { useState, useContext } from "react";
 import PopupWithForm from "./PopupWithForm";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
 export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
+  const currentUser = useContext(CurrentUserContext);
 
-    const currentUser = useContext(CurrentUserContext);
+  React.useEffect(() => {
+    if (currentUser) {
+      setName(currentUser.name);
+      setDescription(currentUser.about);
+    }
+  }, [currentUser]);
 
-    React.useEffect(() => {
-        if (currentUser){
-            setName(currentUser.name);
-            setDescription(currentUser.about);}
-      }, [currentUser]); 
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
 
-    const [name, setName] = useState ('');
-    const [description, setDescription] = useState ('');
+  function handleNameChange(e) {
+    setName(e.target.value);
+  }
+  function handleDescriptionChange(e) {
+    setDescription(e.target.value);
+  }
 
-    function handleNameChange(e) {
-        
-        setName(e.target.value);
-      }
-    function handleDescriptionChange(e) {
-        setDescription(e.target.value);
-      }
+  function handleSubmit(e) {
+    e.preventDefault();
 
-      function handleSubmit(e) {
-        e.preventDefault();
-      
-        onUpdateUser({
-          name,
-          description,
-        });
-      }
+    onUpdateUser({
+      name,
+      description,
+    });
+  }
 
   return (
-
     <PopupWithForm
       isOpen={isOpen}
       name="profile"
@@ -51,7 +49,7 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         required
         minLength="2"
         maxLength="40"
-        value={name} 
+        value={name}
         onChange={handleNameChange}
       ></input>
       <span id="name-error" className="edit-frm__error-message"></span>
@@ -63,7 +61,7 @@ export default function EditProfilePopup({ isOpen, onClose, onUpdateUser }) {
         required
         minLength="2"
         maxLength="200"
-        value={description} 
+        value={description}
         onChange={handleDescriptionChange}
       ></input>
       <span id="description-error" className="edit-frm__error-message"></span>

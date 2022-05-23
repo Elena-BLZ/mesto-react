@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import { api } from "../utils/Api";
 import Card from "./Card";
 
 export default function Main({
@@ -8,32 +7,11 @@ export default function Main({
   onAddPlace,
   onEditAvatar,
   onCardClick,
+  cards,
+  onCardLike,
+  onCardDelete,
 }) {
   const currentUser = useContext(CurrentUserContext);
-  const [cardsData, setCardsData] = useState([]);
-
-  useEffect(() => {
-    api
-      .getInitialCards()
-      .then((res) => {
-        setCardsData(res);
-      })
-      .catch((err) => console.log(`Ошибка.....: ${err}`));
-  }, []);
-
-  function handleCardLike(id, isLiked) {
-    api.changeLikeCardStatus(id, isLiked).then((newCard) => {
-      setCardsData((state) => state.map((c) => (c._id === id ? newCard : c)));
-    });
-  }
-
-  function handleCardDelete (id) {
-    api.deleteCard (id).then (()=>{
-      setCardsData((state)=>state.filter(c=>
-         c._id!==id));
-    })
-
-  }
 
   return (
     <main className="page__content">
@@ -71,18 +49,19 @@ export default function Main({
         ></button>
       </section>
       <section className="elements">
-        {cardsData.map((card) => {
-           const cardId = card._id;
+        {cards.map((card) => {
+          const cardId = card._id;
           return (
-          <Card
-            key={cardId}
-            ownerId={card.owner._id}
-            onCardClick={onCardClick}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-            cardData = {card}
-          />
-        )})}
+            <Card
+              key={cardId}
+              ownerId={card.owner._id}
+              onCardClick={onCardClick}
+              onCardLike={onCardLike}
+              onCardDelete={onCardDelete}
+              cardData={card}
+            />
+          );
+        })}
       </section>
     </main>
   );
