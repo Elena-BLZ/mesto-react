@@ -126,7 +126,11 @@ class Api {
         }
       )
   }
+  changeLikeCardStatus(id, isLiked) {
+    return isLiked ? this.deleteLike(id): this.addLike (id);
+  }
 }
+ 
 
 export const api = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-39',
