@@ -17,7 +17,7 @@ function App() {
     React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(null); //{name, link}
 
-  const [currentUser, setCurrentUser] = React.useState();
+  const [currentUser, setCurrentUser] = React.useState(null);
 
   const [cardsData, setCardsData] = useState([]);
 
@@ -33,13 +33,13 @@ function App() {
   function handleCardLike(id, isLiked) {
     api.changeLikeCardStatus(id, isLiked).then((newCard) => {
       setCardsData((state) => state.map((c) => (c._id === id ? newCard : c)));
-    });
+    }).catch((err) => console.log(`Ошибка.....: ${err}`));
   }
 
   function handleCardDelete(id) {
     api.deleteCard(id).then(() => {
       setCardsData((state) => state.filter((c) => c._id !== id));
-    });
+    }).catch((err) => console.log(`Ошибка.....: ${err}`));
   }
 
   useEffect(() => {
@@ -73,28 +73,27 @@ function App() {
   }
 
   function handleUpdateUser({ name, description }) {
-    api.editProfile(name, description).then(() => {
-      setCurrentUser((state) => {
-        return { ...state, name: name, about: description };
-      });
+    api.editProfile(name, description)
+    .then((res) => {
+      setCurrentUser(res);
       closeAllPopups();
-    });
+    })
+    .catch((err) => console.log(`Ошибка.....: ${err}`));
   }
 
   function handleUpdateAvatar(avatar) {
-    api.editAvatar(avatar.link).then(() => {
-      setCurrentUser((state) => {
-        return { ...state, avatar: avatar.link };
-      });
+    api.editAvatar(avatar.link)
+    .then((res) => {
+      setCurrentUser(res);
       closeAllPopups();
-    });
+    }).catch((err) => console.log(`Ошибка.....: ${err}`));
   }
 
   function handleAddPlaceSubmit({ place, link }) {
     api.addCard(place, link).then((newCard) => {
       setCardsData([newCard, ...cardsData]);
+      closeAllPopups();
     });
-    closeAllPopups();
   }
 
   return (

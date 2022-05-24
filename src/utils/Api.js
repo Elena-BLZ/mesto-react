@@ -3,23 +3,21 @@ class Api {
     this._baseUrl = baseUrl;
     this._headers = headers;
   }
+  _getResponse(res) {
+    if (res.ok) return res.json();
+      return Promise.reject(res.status);
+  }
 
   getInitialCards() {
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) return res.json();
-      return Promise.reject(res.status);
-    });
+    }).then(res => this._getResponse(res));
   }
 
   getProfile() {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) return res.json();
-      return Promise.reject(res.status);
-    });
+    }).then(res => this._getResponse(res));
   }
 
   editProfile(name, about) {
@@ -30,10 +28,7 @@ class Api {
         name: name,
         about: about,
       }),
-    }).then((res) => {
-      if (res.ok) return res.json();
-      return Promise.reject(res.status);
-    });
+    }).then(res => this._getResponse(res));
   }
 
   editAvatar(link) {
@@ -43,10 +38,7 @@ class Api {
       body: JSON.stringify({
         avatar: link,
       }),
-    }).then((res) => {
-      if (res.ok) return res.json();
-      return Promise.reject(res.status);
-    });
+    }).then(res => this._getResponse(res));
   }
 
   addCard(name, link) {
@@ -57,39 +49,27 @@ class Api {
         name: name,
         link: link,
       }),
-    }).then((res) => {
-      if (res.ok) return res.json();
-      return Promise.reject(res.status);
-    });
+    }).then(res => this._getResponse(res));
   }
   deleteCard(id) {
     return fetch(`${this._baseUrl}/cards/${id}`, {
       method: "DELETE",
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) return res.json();
-      return Promise.reject(res.status);
-    });
+    }).then(res => this._getResponse(res));
   }
 
   deleteLike(id) {
     return fetch(`${this._baseUrl}/cards/${id}/likes`, {
       method: "DELETE",
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) return res.json();
-      return Promise.reject(res.status);
-    });
+    }).then(res => this._getResponse(res));
   }
 
   addLike(id) {
     return fetch(`${this._baseUrl}/cards/${id}/likes`, {
       method: "PUT",
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) return res.json();
-      return Promise.reject(res.status);
-    });
+    }).then(res => this._getResponse(res));
   }
   
   changeLikeCardStatus(id, isLiked) {

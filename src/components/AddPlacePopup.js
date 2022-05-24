@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PopupWithForm from "./PopupWithForm";
 
 export default function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
@@ -11,20 +11,22 @@ export default function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
       place,
       link,
     });
-    setPlace("");
-    setLink("");
   }
+
+  useEffect (()=>{
+    if (isOpen) {
+      setPlace("");
+      setLink("");
+    }
+  },[isOpen]);
+
   function handlePlaceChange(e) {
     setPlace(e.target.value);
   }
   function handleLinkChange(e) {
     setLink(e.target.value);
   }
-  function handleClose() {
-    onClose();
-    setPlace("");
-    setLink("");
-  }
+
   return (
     <PopupWithForm
       isOpen={isOpen}
@@ -32,7 +34,7 @@ export default function AddPlacePopup({ isOpen, onClose, onAddPlace }) {
       formName="add-element-frm"
       title="Новое место"
       buttonText="Создать"
-      onClose={handleClose}
+      onClose={onClose}
       onSubmit={handleSubmit}
     >
       <input
