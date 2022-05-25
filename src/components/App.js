@@ -93,7 +93,7 @@ function App() {
     api.addCard(place, link).then((newCard) => {
       setCardsData([newCard, ...cardsData]);
       closeAllPopups();
-    });
+    }).catch((err) => console.log(`Ошибка.....: ${err}`));
   }
 
   return (
